@@ -2,9 +2,9 @@
 module ActionView
   module Helpers
     module FormTagHelper
-      def form_tag_with_zero_captcha(url_for_options = {}, options = {}, *parameters_for_url, &block)
-        zero_captcha = options.delete(:zero_captcha)
-        html = form_tag_without_zero_captcha(url_for_options, options, *parameters_for_url, &block)
+      def form_tag_html_with_zero_captcha(options)
+        zero_captcha = options.delete(:zero_captcha) || options.delete('zero_captcha')
+        html = form_tag_html_without_zero_captcha(options)
         if zero_captcha
           captcha = "".respond_to?(:html_safe) ? zero_captcha_html.html_safe : zero_captcha
           if block_given?
@@ -15,7 +15,7 @@ module ActionView
         end
         html
       end
-      alias_method_chain :form_tag, :zero_captcha
+      alias_method_chain :form_tag_html, :zero_captcha
 
     private
       def zero_captcha_html
