@@ -10,6 +10,10 @@ module ZeroCaptcha
       head :ok if zero_captcha_fields.any? { |name, value| params[name] && params[name] != value }
     end
 
+    def require_zero_captcha
+      head :ok if zero_captcha_fields.any? { |name, value| !params.has_key?(name) }
+    end
+
     def self.included(base) # :nodoc:
       base.send :helper_method, :zero_captcha_fields
 

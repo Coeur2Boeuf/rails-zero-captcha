@@ -27,7 +27,7 @@ In your Gemfile, simply add
 
 Simply specify that the form has a honeypot in the HTML options hash:
 
-    <% form_for Comment.new, :html => { :zero_captcha => true } do |form| -%>
+    <% form_for Comment.new, html: { zero_captcha: true } do |form| -%>
       ...
     <% end -%>
 
@@ -35,7 +35,7 @@ Simply specify that the form has a honeypot in the HTML options hash:
 
 Simply specify that the form has a honeypot in the options hash:
 
-    <% form_tag comments_path, :zero_captcha => true do -%>
+    <% form_tag comments_path, zero_captcha: true do -%>
       ...
     <% end -%>
 
@@ -43,9 +43,17 @@ Simply specify that the form has a honeypot in the options hash:
 
 Simply specify that the form has a honeypot in the options hash:
 
-    <%= form_tag comments_path, :zero_captcha => true -%>
+    <%= form_tag comments_path, zero_captcha: true -%>
       ...
     </form>
+
+## Addition Usage
+
+By default, zero-captcha works by checking against a verify value __if__ provided. If not provided, zero captcha will not activate.
+
+However, if you wish to force the presence of a zero-captcha value, you may use this in your controller:
+
+`prepend_before_filter :require_zero_captcha, only: [:create]`
 
 
 ## Copyright
