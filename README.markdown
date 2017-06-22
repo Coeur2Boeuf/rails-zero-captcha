@@ -47,7 +47,7 @@ Simply specify that the form has a honeypot in the options hash:
       ...
     </form>
 
-## Addition Usage
+## Additional Usage
 
 By default, zero-captcha works by checking against a verify value __if__ provided. If not provided, zero captcha will not activate.
 
