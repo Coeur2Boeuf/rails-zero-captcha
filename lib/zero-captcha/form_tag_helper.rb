@@ -15,9 +15,12 @@ module ActionView
         end
         html
       end
-      alias_method_chain :form_tag_html, :zero_captcha
+      
+      alias_method :form_tag_html_without_zero_captcha, :form_tag_html
+      alias_method :form_tag_html, :form_tag_html_with_zero_captcha
 
-    private
+      private
+
       def zero_captcha_html
         zero_captcha_fields.collect do |name, value|
           content_tag :div do
