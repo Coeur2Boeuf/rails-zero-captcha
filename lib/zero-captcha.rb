@@ -2,12 +2,25 @@ require 'zero-captcha/form_tag_helper'
 
 module ZeroCaptcha
   module SpamProtection
+    # change this in controller by overriding `zero_captcha_fields`
+    # to force forms to feed through specific values
     def zero_captcha_fields
-      { :_zc_field => '5b5cd0da3121fc53b4bc84d0c8af2e81' } # change this in controller by overriding `zero_captcha_fields`
+      timestamp = Time.current.to_i
+      return { 
+        :_zc_field => OpenSSL::HMAC.hexdigest('sha256', Rails.application.secret_key_base, "#{timestamp}"),
+        :_timestamp => timestamp
+      } 
     end
 
+    # change this in controller by overriding `zero_captcha_fields`
+    # to force forms to feed through specific values
     def protect_from_spam_with_zero_captcha
-      head :ok if zero_captcha_fields.any? { |name, value| params[name] && params[name] != value }
+      if request.post?
+        head :ok if !params[:_timestamp]
+        head :ok if !params[:_zc_field]
+        head :ok if Time.at(params[:_timestamp].to_i) < 20.minutes.ago 
+        head :ok if params[:_zc_field] != OpenSSL::HMAC.hexdigest('sha256', Rails.application.secret_key_base, "#{params[:_timestamp]}")
+      end
     end
 
     def require_zero_captcha

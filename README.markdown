@@ -13,7 +13,7 @@ of defense alongside honeypot captchas and/or more traditional captchas.
 
 ## Requirements
 
-Requires jQuery on running on the client side.
+Requires Rails 5+
 
 ## Installation
 

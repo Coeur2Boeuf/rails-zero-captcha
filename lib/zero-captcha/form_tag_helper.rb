@@ -26,7 +26,7 @@ module ActionView
           content_tag :div do
             hidden_field_tag(name, 'verify') +
             javascript_tag do
-              "jQuery('input[name=#{name}]').val('#{value}')".html_safe
+              "document.getElementsByName('#{name}')[0].setAttribute('value', '#{value}');".html_safe
             end
           end
         end.join
