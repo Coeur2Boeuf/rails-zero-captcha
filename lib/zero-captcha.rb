@@ -8,7 +8,7 @@ module ZeroCaptcha
       timestamp = Time.current.to_i
       return { 
         :_zc_field => OpenSSL::HMAC.hexdigest('sha256', Rails.application.secret_key_base, "#{timestamp}"),
-        :_timestamp => timestamp
+        :_zc_timestamp => timestamp
       } 
     end
 
@@ -16,10 +16,8 @@ module ZeroCaptcha
     # to force forms to feed through specific values
     def protect_from_spam_with_zero_captcha
       if request.post?
-        head :ok if !params[:_timestamp]
-        head :ok if !params[:_zc_field]
-        head :ok if Time.at(params[:_timestamp].to_i) < 20.minutes.ago 
-        head :ok if params[:_zc_field] != OpenSSL::HMAC.hexdigest('sha256', Rails.application.secret_key_base, "#{params[:_timestamp]}")
+        head :ok if params[:_zc_timestamp].present? && Time.at(params[:_zc_timestamp].to_i) < 20.minutes.ago 
+        head :ok if params[:_zc_field].present? && params[:_zc_field] != OpenSSL::HMAC.hexdigest('sha256', Rails.application.secret_key_base, "#{params[:_zc_timestamp]}")
       end
     end
 
