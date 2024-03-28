@@ -27,12 +27,6 @@ module ZeroCaptcha
 
     def self.included(base) # :nodoc:
       base.send :helper_method, :zero_captcha_fields
-
-      if base.respond_to? :before_action
-        base.send :prepend_before_action, :protect_from_spam_with_zero_captcha, :only => [:create, :update]
-      elsif base.respond_to? :before_filter
-        base.send :prepend_before_filter, :protect_from_spam_with_zero_captcha, :only => [:create, :update]
-      end
     end
   end
 end
